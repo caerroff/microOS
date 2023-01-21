@@ -13,7 +13,7 @@ print:
 
 
 message:
-    db "Welcome to microOS", 0
+    db "--- Welcome to microOS ---", 0
 
 end:
 
