@@ -1,2 +1,2 @@
 # microOS
-An AMD64 OS
+An x86 OS
