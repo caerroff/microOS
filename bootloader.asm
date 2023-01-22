@@ -76,24 +76,21 @@ int 0x13 ; call BIOS disk interrupt
 ; Jump to the kernel
 ; jmp 0x1000:0x0000
 continue:
-    mov ah, 0x00
-    int 0x16
-    cmp al, 0x0D
-    je return
-    mov ah, 0x0e
-    int 0x10
-    jmp continue
+    cli
+    lgdt [gdtr]
+    mov eax, cr0
+    or al, 1
+    mov cr0, eax
 
+    jmp 0x08:PModeMain
 
-return:
-    mov ah, 0x0e
-    mov al, 0x0A
-    int 0x10
-    mov al, 0x0A
-    int 0x10
-    mov al, 0x0D
-    int 0x10
-    jmp continue
+PModeMain:
+    mov ds, 0x00
+    mov es, 0x00
+    mov fs, 0x00
+    mov gs, 0x00
+    mov ss, 0x00
+    mov esp, 0x00
 
 ; Boot signature
 times 510-($-$$) db 0
