@@ -3,3 +3,4 @@ boot
 *.bin
 boot.o
 kernel
+*.o

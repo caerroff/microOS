@@ -1,6 +1,21 @@
 org 0x7c00 ;to put the origin at the right place
 bits 16 ;starting in 16 bits mode
 
+mov al, 0x03
+int 0x10
+
+mov ax, 0x0600
+mov bh, 0x07
+mov cx, 0x0000
+mov dx, 0x184f
+int 0x10
+
+mov ah, 0x02
+mov dh, 0x00 ; row 0
+mov dl, 0x00 ; column 0
+int 0x10
+
+
 mov ah, 0x0e
 mov bx, message
 print:
@@ -37,7 +52,7 @@ printTwo:
     inc bx
     jmp printTwo
 
-continue:
+;continue:
 ; Set up the segment registers
 mov ax, 0x0000 ; Set the data segment to 0
 mov ds, ax
@@ -54,12 +69,31 @@ mov al, 0x01 ; read one sector
 mov ch, 0x00 ; cylinder 0
 mov cl, 0x02 ; sector 2
 mov dh, 0x00 ; head 0
-mov dl, 0x80 ; drive 0 (floppy)
+mov dl, 0x80 ; drive 2 (disk1)
 mov bx, 0x1000 ; destination memory address
 int 0x13 ; call BIOS disk interrupt
 
 ; Jump to the kernel
-jmp 0x1000:0x0000
+; jmp 0x1000:0x0000
+continue:
+    mov ah, 0x00
+    int 0x16
+    cmp al, 0x0D
+    je return
+    mov ah, 0x0e
+    int 0x10
+    jmp continue
+
+
+return:
+    mov ah, 0x0e
+    mov al, 0x0A
+    int 0x10
+    mov al, 0x0A
+    int 0x10
+    mov al, 0x0D
+    int 0x10
+    jmp continue
 
 ; Boot signature
 times 510-($-$$) db 0
