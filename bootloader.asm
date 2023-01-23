@@ -84,15 +84,11 @@ gdtr:
     db 0x9a     ; access
     db 0xcf     ; flags and limit 16:29
     db 0x00     ; base 24:31
-
-continue:
-
-; IDT descriptor
 idt_descriptor:
     dw 256*8-1  ; limit (size of the IDT - 1)
     dd idt      ; base address of the IDT
 
-; Interrupt Descriptor Table
+    ; Interrupt Descriptor Table
 idt:
     ; Interrupt 0 - Division by zero
     dw 0x8e00  ; offset 0:15
@@ -122,6 +118,12 @@ idt:
     db 0x00    ; type_attr
     dw 0x0000  ; offset 16:31
     ; ... more interrupts ...
+continue:
+
+; IDT descriptor
+
+
+
 
 ; Page directory
 page_directory:
