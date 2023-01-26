@@ -1,4 +1,3 @@
-#include <stdio.h>
 /**
  * MICRO OS KERNEL
  * A simple Kernel created for microOS x86
@@ -11,7 +10,5 @@
 */
 
 int main(void){
-    printf("Welcome to the kernel\n");
-    fprintf(stderr, "ERROR : Test\n");
     return 0;
 }

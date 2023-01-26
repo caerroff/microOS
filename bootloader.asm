@@ -73,7 +73,7 @@ printTwo:
 ;mov bx, 0x1000 ; destination memory address
 ;int 0x13 ; call BIOS disk interrupt
 
-jmp continue
+
 ; Jump to the kernel
 ; jmp 0x1000:0x0000
 
@@ -119,7 +119,7 @@ idt:
     dw 0x0000  ; offset 16:31
     ; ... more interrupts ...
 continue:
-
+    
 ; IDT descriptor
 
 
@@ -142,9 +142,9 @@ mov eax, page_directory
 mov cr3, eax
 
 ; Enable paging
-mov eax, cr0
-or eax, 0x80000000
-mov cr0, eax
+;mov eax, cr0
+;or eax, 0x80000000
+;mov cr0, eax
 
 ; Load the IDT descriptor
     lidt [idt_descriptor]
@@ -154,12 +154,13 @@ mov cr0, eax
     mov eax, cr0
     or eax, 0x1
     mov cr0, eax
-    jmp flush
+
 flush:
     mov eax, cr3
     mov cr3, eax
+    
     ; from here, we are in 32bit, protected mode
-
+    hlt
 ; Boot signature
 times 510-($-$$) db 0
 dw 0xaa55
